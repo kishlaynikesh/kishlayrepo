@@ -280,7 +280,7 @@ public class UncommentedMainCheck
      */
     private static boolean checkName(DetailAST method) {
         final DetailAST ident = method.findFirstToken(TokenTypes.IDENT);
-        return "main".equals(ident.getText());
+        return ident.getText().equals("main");
     }
 
     /**

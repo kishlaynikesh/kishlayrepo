@@ -19,15 +19,16 @@
 
 package com.puppycrawl.tools.checkstyle.checks.design;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
+import com.google.common.base.Splitter;
 import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * <p>
@@ -256,8 +257,8 @@ public class FinalClassCheck
      */
     private static boolean doesNameOfClassMatchAnonymousInnerClassName(DetailAST ast,
                                                                ClassDesc classDesc) {
-        final String[] className = classDesc.getQualifiedName().split("\\.");
-        return ast.getFirstChild().getText().equals(className[className.length - 1]);
+        final List<String> className = Splitter.on('.').splitToList(classDesc.getQualifiedName());
+        return ast.getFirstChild().getText().equals(className.get(className.size() - 1));
     }
 
     /**

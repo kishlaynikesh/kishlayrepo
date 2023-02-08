@@ -308,7 +308,7 @@ public class JavadocDetailNodeParser {
     private JavadocNodeImpl createJavadocNode(ParseTree parseTree, DetailNode parent, int index) {
         final JavadocNodeImpl node = new JavadocNodeImpl();
         if (parseTree.getChildCount() == 0
-                || "Text".equals(getNodeClassNameWithoutContext(parseTree))) {
+                || getNodeClassNameWithoutContext(parseTree).equals("Text")) {
             node.setText(parseTree.getText());
         }
         else {
@@ -543,8 +543,7 @@ public class JavadocDetailNodeParser {
     private static String convertUpperCamelToUpperUnderscore(String text) {
         final StringBuilder result = new StringBuilder(20);
         boolean first = true;
-        for (char letter : text.toCharArray()) {
-            if (!first && Character.isUpperCase(letter)) {
+        for (int i = 0; i < text.length(); i++) { char letter = text.charAt(i);if (!first && Character.isUpperCase(letter)) {
                 result.append('_');
             }
             result.append(Character.toUpperCase(letter));
@@ -608,7 +607,7 @@ public class JavadocDetailNodeParser {
                 String msg, RecognitionException ex) {
             final int lineNumber = offset + line;
 
-            if (MSG_JAVADOC_WRONG_SINGLETON_TAG.equals(msg)) {
+            if (msg.equals(MSG_JAVADOC_WRONG_SINGLETON_TAG)) {
                 errorMessage = new ParseErrorMessage(lineNumber,
                         MSG_JAVADOC_WRONG_SINGLETON_TAG, charPositionInLine,
                         ((Token) offendingSymbol).getText());

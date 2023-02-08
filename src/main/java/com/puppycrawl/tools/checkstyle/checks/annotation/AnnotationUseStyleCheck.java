@@ -379,7 +379,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
     }
 
     /**
-     * Retrieves an {@link Enum Enum} type from a @{link String String}.
+     * Retrieves an {@link Enum Enum} type from a {@link String String}.
      *
      * @param <T> the enum type
      * @param enumClass the enum class
@@ -485,8 +485,8 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
                 TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR);
 
         if (valuePairCount == 1
-            && ANNOTATION_ELEMENT_SINGLE_NAME.equals(
-                valuePair.getFirstChild().getText())) {
+            && valuePair.getFirstChild().getText().equals(
+                ANNOTATION_ELEMENT_SINGLE_NAME)) {
             log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE,
                 ElementStyleOption.COMPACT);
         }

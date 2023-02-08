@@ -60,7 +60,7 @@ class IntRangeFilterElement implements IntFilterElement {
         if (this == other) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(other instanceof IntRangeFilterElement)) {
             return false;
         }
         final IntRangeFilterElement intRangeFilter = (IntRangeFilterElement) other;

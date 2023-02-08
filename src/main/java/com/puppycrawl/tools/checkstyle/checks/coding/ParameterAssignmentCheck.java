@@ -174,8 +174,8 @@ public final class ParameterAssignmentCheck extends AbstractCheck {
     public void leaveToken(DetailAST ast) {
         final int type = ast.getType();
         if (TokenUtil.isOfType(type, TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF)
-                || type == TokenTypes.LAMBDA
-                && ast.getParent().getType() != TokenTypes.SWITCH_RULE) {
+                || (type == TokenTypes.LAMBDA
+                && ast.getParent().getType() != TokenTypes.SWITCH_RULE)) {
             parameterNames = parameterNamesStack.pop();
         }
     }

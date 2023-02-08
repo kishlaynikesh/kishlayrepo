@@ -375,12 +375,12 @@ public class AvoidEscapedUnicodeCharactersCheck
         final String literal =
             CheckUtil.stripIndentAndInitialNewLineFromTextBlock(ast.getText());
 
-        if (hasUnicodeChar(literal) && !(allowByTailComment && hasTrailComment(ast)
+        if (hasUnicodeChar(literal) && !((allowByTailComment && hasTrailComment(ast))
                 || isAllCharactersEscaped(literal)
-                || allowEscapesForControlCharacters
-                        && isOnlyUnicodeValidChars(literal, UNICODE_CONTROL)
-                || allowNonPrintableEscapes
-                        && isOnlyUnicodeValidChars(literal, NON_PRINTABLE_CHARS))) {
+                || (allowEscapesForControlCharacters
+                        && isOnlyUnicodeValidChars(literal, UNICODE_CONTROL))
+                || (allowNonPrintableEscapes
+                        && isOnlyUnicodeValidChars(literal, NON_PRINTABLE_CHARS)))) {
             log(ast, MSG_KEY);
         }
     }

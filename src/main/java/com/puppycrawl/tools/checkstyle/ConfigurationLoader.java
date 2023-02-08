@@ -68,7 +68,7 @@ public final class ConfigurationLoader {
     }
 
     /** Format of message for sax parse exception. */
-    private static final String SAX_PARSE_EXCEPTION_FORMAT = "%s - %s:%s:%s";
+    
 
     /** The public ID for version 1_0 of the configuration dtd. */
     private static final String DTD_PUBLIC_ID_1_0 =
@@ -316,7 +316,7 @@ public final class ConfigurationLoader {
             return loader.configuration;
         }
         catch (final SAXParseException ex) {
-            final String message = String.format(Locale.ROOT, SAX_PARSE_EXCEPTION_FORMAT,
+            final String message = String.format(Locale.ROOT, "%s - %s:%s:%s",
                     UNABLE_TO_PARSE_EXCEPTION_PREFIX,
                     ex.getMessage(), ex.getLineNumber(), ex.getColumnNumber());
             throw new CheckstyleException(message, ex);
@@ -498,7 +498,7 @@ public final class ConfigurationLoader {
                                  String qName,
                                  Attributes attributes)
                 throws SAXException {
-            if (MODULE.equals(qName)) {
+            if (qName.equals(MODULE)) {
                 // create configuration
                 final String originalName = attributes.getValue(NAME);
                 final String name = threadModeSettings.resolveName(originalName);
@@ -518,7 +518,7 @@ public final class ConfigurationLoader {
 
                 configStack.push(conf);
             }
-            else if (PROPERTY.equals(qName)) {
+            else if (qName.equals(PROPERTY)) {
                 // extract value and name
                 final String value;
                 try {
@@ -536,7 +536,7 @@ public final class ConfigurationLoader {
                     configStack.peek();
                 top.addProperty(name, value);
             }
-            else if (MESSAGE.equals(qName)) {
+            else if (qName.equals(MESSAGE)) {
                 // extract key and value
                 final String key = attributes.getValue(KEY);
                 final String value = attributes.getValue(VALUE);
@@ -546,7 +546,7 @@ public final class ConfigurationLoader {
                 top.addMessage(key, value);
             }
             else {
-                if (!METADATA.equals(qName)) {
+                if (!qName.equals(METADATA)) {
                     throw new IllegalStateException("Unknown name:" + qName + ".");
                 }
             }
@@ -556,7 +556,7 @@ public final class ConfigurationLoader {
         public void endElement(String uri,
                                String localName,
                                String qName) throws SAXException {
-            if (MODULE.equals(qName)) {
+            if (qName.equals(MODULE)) {
                 final Configuration recentModule =
                     configStack.pop();
 

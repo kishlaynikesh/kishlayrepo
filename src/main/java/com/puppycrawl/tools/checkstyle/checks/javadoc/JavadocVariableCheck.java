@@ -266,8 +266,8 @@ public class JavadocVariableCheck
      */
     private boolean isIgnored(DetailAST ast) {
         final String name = ast.findFirstToken(TokenTypes.IDENT).getText();
-        return ignoreNamePattern != null && ignoreNamePattern.matcher(name).matches()
-            || "serialVersionUID".equals(name);
+        return (ignoreNamePattern != null && ignoreNamePattern.matcher(name).matches())
+            || name.equals("serialVersionUID");
     }
 
     /**

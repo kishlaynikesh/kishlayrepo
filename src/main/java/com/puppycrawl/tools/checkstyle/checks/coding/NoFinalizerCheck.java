@@ -103,7 +103,7 @@ public class NoFinalizerCheck extends AbstractCheck {
         final DetailAST mid = ast.findFirstToken(TokenTypes.IDENT);
         final String name = mid.getText();
 
-        if ("finalize".equals(name)) {
+        if (name.equals("finalize")) {
             final DetailAST params = ast.findFirstToken(TokenTypes.PARAMETERS);
             final boolean hasEmptyParamList =
                 params.findFirstToken(TokenTypes.PARAMETER_DEF) == null;

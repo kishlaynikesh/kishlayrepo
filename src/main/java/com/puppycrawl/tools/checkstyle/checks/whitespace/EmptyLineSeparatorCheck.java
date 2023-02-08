@@ -775,7 +775,7 @@ public class EmptyLineSeparatorCheck extends AbstractCheck {
      * @param token DetailAST token
      */
     private void checkCommentsInsideToken(DetailAST token) {
-        final List<DetailAST> childNodes = new LinkedList<>();
+        final List<DetailAST> childNodes = new ArrayList<>();
         DetailAST childNode = token.getLastChild();
         while (childNode != null) {
             if (childNode.getType() == TokenTypes.MODIFIERS) {

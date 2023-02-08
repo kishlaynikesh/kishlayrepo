@@ -19,19 +19,19 @@
 
 package com.puppycrawl.tools.checkstyle.checks.naming;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -511,7 +511,7 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
             result = ignoreStaticFinal;
         }
         else {
-            result = ignoreStatic && isStatic || ignoreFinal && isFinal;
+            result = (ignoreStatic && isStatic) || (ignoreFinal && isFinal);
         }
         return result;
     }
@@ -548,7 +548,7 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
         for (DetailAST child : getChildren(methodModifiersAST)) {
             final DetailAST annotationIdent = child.findFirstToken(TokenTypes.IDENT);
 
-            if (annotationIdent != null && "Override".equals(annotationIdent.getText())) {
+            if (annotationIdent != null && annotationIdent.getText().equals("Override")) {
                 result = true;
                 break;
             }
@@ -657,7 +657,7 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
      * @return The list of children one level below on the current parent node.
      */
     private static List<DetailAST> getChildren(final DetailAST node) {
-        final List<DetailAST> result = new LinkedList<>();
+        final List<DetailAST> result = new ArrayList<>();
         DetailAST curNode = node.getFirstChild();
         while (curNode != null) {
             result.add(curNode);

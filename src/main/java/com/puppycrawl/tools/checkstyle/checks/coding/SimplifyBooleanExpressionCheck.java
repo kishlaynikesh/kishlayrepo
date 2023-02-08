@@ -121,9 +121,9 @@ public class SimplifyBooleanExpressionCheck
             case TokenTypes.QUESTION:
                 final DetailAST nextSibling = ast.getNextSibling();
                 if (TokenUtil.isBooleanLiteralType(parent.getFirstChild().getType())
-                        || nextSibling != null
+                        || (nextSibling != null
                         && TokenUtil.isBooleanLiteralType(
-                        nextSibling.getNextSibling().getType())) {
+                        nextSibling.getNextSibling().getType()))) {
                     log(parent, MSG_KEY);
                 }
                 break;

@@ -272,8 +272,8 @@ public class TrailingCommentCheck extends AbstractCheck {
         final String lineBefore = getLines()[lineNo - 1].substring(0, ast.getColumnNo());
         final boolean isCommentAtEndOfLine = ast.getLineNo() != lastChild.getLineNo()
                 || CommonUtil.isBlank(line);
-        final boolean isLegalBlockComment = isLegalCommentContent(comment)
-                && TokenUtil.areOnSameLine(firstChild, lastChild)
+        final boolean isLegalBlockComment = (isLegalCommentContent(comment)
+                && TokenUtil.areOnSameLine(firstChild, lastChild))
                 || format.matcher(lineBefore).find();
 
         if (isCommentAtEndOfLine && !isLegalBlockComment) {

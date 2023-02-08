@@ -227,7 +227,7 @@ public class SingleSpaceSeparatorCheck extends AbstractCheck {
         return isSingleSpace(line, columnNo)
                 || !isWhitespace(line, columnNo)
                 || isFirstInLine(line, columnNo)
-                || !validateComments && isBlockCommentEnd(line, columnNo);
+                || (!validateComments && isBlockCommentEnd(line, columnNo));
     }
 
     /**

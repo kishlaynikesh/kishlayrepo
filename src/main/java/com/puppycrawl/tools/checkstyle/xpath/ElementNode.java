@@ -172,7 +172,7 @@ public class ElementNode extends AbstractNode {
     @Override
     public String getAttributeValue(String namespace, String localPart) {
         final String result;
-        if (TEXT_ATTRIBUTE_NAME.equals(localPart)) {
+        if (localPart.equals(TEXT_ATTRIBUTE_NAME)) {
             result = Optional.ofNullable(getAttributeNode())
                 .map(AttributeNode::getStringValue)
                 .orElse(null);

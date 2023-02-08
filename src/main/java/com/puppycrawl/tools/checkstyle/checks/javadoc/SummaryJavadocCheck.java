@@ -354,8 +354,8 @@ public class SummaryJavadocCheck extends AbstractJavadocCheck {
      */
     private static boolean isInlineTagPresent(DetailNode ast) {
         return ast.getType() == JavadocTokenTypes.JAVADOC_INLINE_TAG
-                || ast.getType() == JavadocTokenTypes.HTML_ELEMENT
-                && getInlineTagNodeWithinHtmlElement(ast) != null;
+                || (ast.getType() == JavadocTokenTypes.HTML_ELEMENT
+                && getInlineTagNodeWithinHtmlElement(ast) != null);
     }
 
     /**
@@ -399,7 +399,7 @@ public class SummaryJavadocCheck extends AbstractJavadocCheck {
         // children of Inline Tag, as at least 2 children will be present which are
         // RCURLY and LCURLY.
         return child[1].getType() == JavadocTokenTypes.CUSTOM_NAME
-                && SUMMARY_TEXT.equals(child[1].getText());
+                && child[1].getText().equals(SUMMARY_TEXT);
     }
 
     /**
@@ -485,8 +485,7 @@ public class SummaryJavadocCheck extends AbstractJavadocCheck {
         final StringBuilder result = new StringBuilder(256);
         boolean previousWhitespace = true;
 
-        for (char letter : text.toCharArray()) {
-            final char print;
+        for (int i = 0; i < text.length(); i++) { char letter = text.charAt(i);final char print;
             if (Character.isWhitespace(letter)) {
                 if (previousWhitespace) {
                     continue;

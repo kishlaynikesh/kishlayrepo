@@ -269,12 +269,12 @@ public enum JavadocTagInfo {
             final String methodName = methodNameAst.getText();
 
             return astType == TokenTypes.METHOD_DEF
-                && ("writeObject".equals(methodName)
-                    || "readObject".equals(methodName)
-                    || "writeExternal".equals(methodName)
-                    || "readExternal".equals(methodName)
-                    || "writeReplace".equals(methodName)
-                    || "readResolve".equals(methodName));
+                && (methodName.equals("writeObject")
+                    || methodName.equals("readObject")
+                    || methodName.equals("writeExternal")
+                    || methodName.equals("readExternal")
+                    || methodName.equals("writeReplace")
+                    || methodName.equals("readResolve"));
         }
 
     },
@@ -291,7 +291,7 @@ public enum JavadocTagInfo {
 
             return astType == TokenTypes.VARIABLE_DEF
                 && varType.getFirstChild().getType() == TokenTypes.ARRAY_DECLARATOR
-                && "ObjectStreamField".equals(varType.getFirstChild().getText());
+                && varType.getFirstChild().getText().equals("ObjectStreamField");
         }
 
     },

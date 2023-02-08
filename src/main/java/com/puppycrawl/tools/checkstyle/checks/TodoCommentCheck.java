@@ -19,12 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks;
 
-import java.util.regex.Pattern;
-
+import com.google.common.base.Splitter;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -135,7 +135,7 @@ public class TodoCommentCheck
 
     @Override
     public void visitToken(DetailAST ast) {
-        final String[] lines = ast.getText().split("\n");
+        final Iterable<String> lines = Splitter.on('\n').split(ast.getText());
 
         for (String line : lines) {
             if (format.matcher(line).find()) {

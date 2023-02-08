@@ -222,7 +222,7 @@ public class CovariantEqualsCheck extends AbstractCheck {
         final DetailAST typeNode = paramNode.findFirstToken(TokenTypes.TYPE);
         final FullIdent fullIdent = FullIdent.createFullIdentBelow(typeNode);
         final String name = fullIdent.getText();
-        return "Object".equals(name) || "java.lang.Object".equals(name);
+        return name.equals("Object") || name.equals("java.lang.Object");
     }
 
 }

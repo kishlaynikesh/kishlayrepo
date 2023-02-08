@@ -716,10 +716,10 @@ public class CommentsIndentationCheck extends AbstractCheck {
         final int endBlockLineNo = endBlockStmt.getLineNo();
         final DetailAST catchAst = endBlockStmt.getParent().getParent();
         final DetailAST finallyAst = catchAst.getNextSibling();
-        return nextBlock != null && nextBlock.getLineNo() == endBlockLineNo
-                || finallyAst != null
+        return (nextBlock != null && nextBlock.getLineNo() == endBlockLineNo)
+                || (finallyAst != null
                     && catchAst.getType() == TokenTypes.LITERAL_CATCH
-                    && finallyAst.getLineNo() == endBlockLineNo;
+                    && finallyAst.getLineNo() == endBlockLineNo);
     }
 
     /**
@@ -1167,7 +1167,7 @@ public class CommentsIndentationCheck extends AbstractCheck {
         final int commentColumnNo = blockComment.getColumnNo();
         final DetailAST nextSibling = blockComment.getNextSibling();
         return !CommonUtil.hasWhitespaceBefore(commentColumnNo, commentLine)
-            || nextSibling != null && TokenUtil.areOnSameLine(nextSibling, blockComment);
+            || (nextSibling != null && TokenUtil.areOnSameLine(nextSibling, blockComment));
     }
 
     /**

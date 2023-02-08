@@ -239,8 +239,8 @@ public class ArrayTrailingCommaCheck extends AbstractCheck {
 
         if (arrayInit.getChildCount() != 1
                 && (alwaysDemandTrailingComma
-                    || !TokenUtil.areOnSameLine(rcurly, previousSibling)
-                        && !TokenUtil.areOnSameLine(arrayInit, previousSibling))
+                    || (!TokenUtil.areOnSameLine(rcurly, previousSibling)
+                        && !TokenUtil.areOnSameLine(arrayInit, previousSibling)))
                 && previousSibling.getType() != TokenTypes.COMMA) {
             log(previousSibling, MSG_KEY);
         }

@@ -733,9 +733,9 @@ public final class IllegalTypeCheck extends AbstractCheck {
         final String shortName = className.substring(className.lastIndexOf('.') + 1);
         return illegalClassNames.contains(className)
                 || illegalShortClassNames.contains(shortName)
-                || validateAbstractClassNames
+                || (validateAbstractClassNames
                     && !legalAbstractClassNames.contains(className)
-                    && illegalAbstractClassNameFormat.matcher(className).find();
+                    && illegalAbstractClassNameFormat.matcher(className).find());
     }
 
     /**

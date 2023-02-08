@@ -729,7 +729,7 @@ public class WhitespaceAroundCheck extends AbstractCheck {
                         || isColonOfForEach(parentType);
         final boolean emptyBlockOrType =
                 isEmptyBlock(ast, parentType)
-                    || allowEmptyTypes && isEmptyType(ast);
+                    || (allowEmptyTypes && isEmptyType(ast));
 
         return starImportOrSlistInsideCaseGroup
                 || colonOfCaseOrDefaultOrForEach
@@ -974,10 +974,10 @@ public class WhitespaceAroundCheck extends AbstractCheck {
         final int type = ast.getType();
         final DetailAST nextSibling = ast.getNextSibling();
         final DetailAST previousSibling = ast.getPreviousSibling();
-        return type == TokenTypes.LCURLY
-                    && nextSibling.getType() == TokenTypes.RCURLY
-                || previousSibling != null
-                    && previousSibling.getType() == TokenTypes.LCURLY;
+        return (type == TokenTypes.LCURLY
+                    && nextSibling.getType() == TokenTypes.RCURLY)
+                || (previousSibling != null
+                    && previousSibling.getType() == TokenTypes.LCURLY);
     }
 
     /**

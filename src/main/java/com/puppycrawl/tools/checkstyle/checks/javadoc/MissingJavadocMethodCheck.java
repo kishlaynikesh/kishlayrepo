@@ -412,8 +412,8 @@ public class MissingJavadocMethodCheck extends AbstractCheck {
      * @return True if this method or constructor doesn't need Javadoc.
      */
     private boolean isMissingJavadocAllowed(final DetailAST ast) {
-        return allowMissingPropertyJavadoc
-                && (CheckUtil.isSetterMethod(ast) || CheckUtil.isGetterMethod(ast))
+        return (allowMissingPropertyJavadoc
+                && (CheckUtil.isSetterMethod(ast) || CheckUtil.isGetterMethod(ast)))
             || matchesSkipRegex(ast)
             || isContentsAllowMissingJavadoc(ast);
     }
@@ -465,8 +465,8 @@ public class MissingJavadocMethodCheck extends AbstractCheck {
         final Scope surroundingScope = ScopeUtil.getSurroundingScope(ast);
 
         return (excludeScope == null
-                || nodeScope != excludeScope
-                && surroundingScope != excludeScope)
+                || (nodeScope != excludeScope
+                && surroundingScope != excludeScope))
             && nodeScope.isIn(scope)
             && surroundingScope.isIn(scope);
     }

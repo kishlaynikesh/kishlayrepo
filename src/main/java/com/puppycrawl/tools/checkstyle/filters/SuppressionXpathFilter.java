@@ -546,7 +546,7 @@ public class SuppressionXpathFilter extends AutomaticBean implements
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(obj instanceof SuppressionXpathFilter)) {
             return false;
         }
         final SuppressionXpathFilter suppressionXpathFilter = (SuppressionXpathFilter) obj;

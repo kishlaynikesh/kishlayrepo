@@ -162,13 +162,13 @@ public final class ImportControlLoader extends XmlLoader {
                              String qName,
                              Attributes attributes)
             throws SAXException {
-        if ("import-control".equals(qName)) {
+        if (qName.equals("import-control")) {
             final String pkg = safeGet(attributes, PKG_ATTRIBUTE_NAME);
             final MismatchStrategy strategyOnMismatch = getStrategyForImportControl(attributes);
             final boolean regex = containsRegexAttribute(attributes);
             stack.push(new PkgImportControl(pkg, regex, strategyOnMismatch));
         }
-        else if (SUBPACKAGE_ELEMENT_NAME.equals(qName)) {
+        else if (qName.equals(SUBPACKAGE_ELEMENT_NAME)) {
             final String name = safeGet(attributes, NAME_ATTRIBUTE_NAME);
             final MismatchStrategy strategyOnMismatch = getStrategyForSubpackage(attributes);
             final boolean regex = containsRegexAttribute(attributes);
@@ -178,7 +178,7 @@ public final class ImportControlLoader extends XmlLoader {
             parentImportControl.addChild(importControl);
             stack.push(importControl);
         }
-        else if (FILE_ELEMENT_NAME.equals(qName)) {
+        else if (qName.equals(FILE_ELEMENT_NAME)) {
             final String name = safeGet(attributes, NAME_ATTRIBUTE_NAME);
             final boolean regex = containsRegexAttribute(attributes);
             final PkgImportControl parentImportControl = (PkgImportControl) stack.peek();
@@ -187,7 +187,7 @@ public final class ImportControlLoader extends XmlLoader {
             parentImportControl.addChild(importControl);
             stack.push(importControl);
         }
-        else if (ALLOW_ELEMENT_NAME.equals(qName) || "disallow".equals(qName)) {
+        else if (qName.equals(ALLOW_ELEMENT_NAME) || qName.equals("disallow")) {
             final AbstractImportRule rule = createImportRule(qName, attributes);
             stack.peek().addImportRule(rule);
         }
@@ -207,7 +207,7 @@ public final class ImportControlLoader extends XmlLoader {
         // Need to handle either "pkg" or "class" attribute.
         // May have "exact-match" for "pkg"
         // May have "local-only"
-        final boolean isAllow = ALLOW_ELEMENT_NAME.equals(qName);
+        final boolean isAllow = qName.equals(ALLOW_ELEMENT_NAME);
         final boolean isLocalOnly = attributes.getValue("local-only") != null;
         final String pkg = attributes.getValue(PKG_ATTRIBUTE_NAME);
         final boolean regex = containsRegexAttribute(attributes);
@@ -239,7 +239,7 @@ public final class ImportControlLoader extends XmlLoader {
     @Override
     public void endElement(String namespaceUri, String localName,
         String qName) {
-        if (SUBPACKAGE_ELEMENT_NAME.equals(qName) || FILE_ELEMENT_NAME.equals(qName)) {
+        if (qName.equals(SUBPACKAGE_ELEMENT_NAME) || qName.equals(FILE_ELEMENT_NAME)) {
             stack.pop();
         }
     }
@@ -317,7 +317,7 @@ public final class ImportControlLoader extends XmlLoader {
     private static MismatchStrategy getStrategyForImportControl(Attributes attributes) {
         final String returnValue = attributes.getValue(STRATEGY_ON_MISMATCH_ATTRIBUTE_NAME);
         MismatchStrategy strategyOnMismatch = MismatchStrategy.DISALLOWED;
-        if (STRATEGY_ON_MISMATCH_ALLOWED_VALUE.equals(returnValue)) {
+        if (returnValue.equals(STRATEGY_ON_MISMATCH_ALLOWED_VALUE)) {
             strategyOnMismatch = MismatchStrategy.ALLOWED;
         }
         return strategyOnMismatch;
@@ -332,10 +332,10 @@ public final class ImportControlLoader extends XmlLoader {
     private static MismatchStrategy getStrategyForSubpackage(Attributes attributes) {
         final String returnValue = attributes.getValue(STRATEGY_ON_MISMATCH_ATTRIBUTE_NAME);
         MismatchStrategy strategyOnMismatch = MismatchStrategy.DELEGATE_TO_PARENT;
-        if (STRATEGY_ON_MISMATCH_ALLOWED_VALUE.equals(returnValue)) {
+        if (returnValue.equals(STRATEGY_ON_MISMATCH_ALLOWED_VALUE)) {
             strategyOnMismatch = MismatchStrategy.ALLOWED;
         }
-        else if (STRATEGY_ON_MISMATCH_DISALLOWED_VALUE.equals(returnValue)) {
+        else if (returnValue.equals(STRATEGY_ON_MISMATCH_DISALLOWED_VALUE)) {
             strategyOnMismatch = MismatchStrategy.DISALLOWED;
         }
         return strategyOnMismatch;

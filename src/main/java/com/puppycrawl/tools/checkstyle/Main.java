@@ -200,7 +200,7 @@ public final class Main {
     private static List<File> getFilesToProcess(CliOptions options) {
         final List<Pattern> patternsToExclude = options.getExclusions();
 
-        final List<File> result = new LinkedList<>();
+        final List<File> result = new ArrayList<>();
         for (File file : options.files) {
             result.addAll(listFiles(file, patternsToExclude));
         }
@@ -220,7 +220,7 @@ public final class Main {
     private static List<File> listFiles(File node, List<Pattern> patternsToExclude) {
         // could be replaced with org.apache.commons.io.FileUtils.list() method
         // if only we add commons-io library
-        final List<File> result = new LinkedList<>();
+        final List<File> result = new ArrayList<>();
 
         if (node.canRead() && !isPathExcluded(node.getAbsolutePath(), patternsToExclude)) {
             if (node.isDirectory()) {
@@ -468,7 +468,7 @@ public final class Main {
 
         final Configuration[] children = config.getChildren();
         for (Configuration child : children) {
-            if ("TreeWalker".equals(child.getName())) {
+            if (child.getName().equals("TreeWalker")) {
                 result = child;
                 break;
             }

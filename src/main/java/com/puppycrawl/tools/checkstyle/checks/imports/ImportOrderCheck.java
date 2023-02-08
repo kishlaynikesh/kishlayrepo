@@ -941,8 +941,8 @@ public class ImportOrderCheck
                         ||
                         // current and previous static or current and
                         // previous non-static
-                        lastImportStatic == isStatic
-                    && isWrongOrder(name, isStatic);
+                        (lastImportStatic == isStatic
+                    && isWrongOrder(name, isStatic));
 
                 if (shouldFireError) {
                     log(ast, MSG_ORDERING, name);
@@ -1147,7 +1147,7 @@ public class ImportOrderCheck
 
             // if the pkg name is the wildcard, make it match zero chars
             // from any name, so it will always be used as last resort.
-            if (WILDCARD_GROUP_NAME.equals(pkg)) {
+            if (pkg.equals(WILDCARD_GROUP_NAME)) {
                 // matches any package
                 grp = Pattern.compile("");
             }

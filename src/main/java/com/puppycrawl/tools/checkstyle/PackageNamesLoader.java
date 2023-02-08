@@ -91,7 +91,7 @@ public final class PackageNamesLoader
                              String localName,
                              String qName,
                              Attributes attributes) {
-        if (PACKAGE_ELEMENT_NAME.equals(qName)) {
+        if (qName.equals(PACKAGE_ELEMENT_NAME)) {
             // push package name, name is mandatory attribute with not empty value by DTD
             final String name = attributes.getValue("name");
             packageStack.push(name);
@@ -120,7 +120,7 @@ public final class PackageNamesLoader
     public void endElement(String uri,
                            String localName,
                            String qName) {
-        if (PACKAGE_ELEMENT_NAME.equals(qName)) {
+        if (qName.equals(PACKAGE_ELEMENT_NAME)) {
             packageNames.add(getPackageName());
             packageStack.pop();
         }

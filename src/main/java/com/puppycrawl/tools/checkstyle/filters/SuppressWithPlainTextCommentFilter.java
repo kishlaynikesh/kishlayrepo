@@ -594,8 +594,8 @@ public class SuppressWithPlainTextCommentFilter extends AutomaticBean implements
                 return false;
             }
             final Suppression suppression = (Suppression) other;
-            return Objects.equals(lineNo, suppression.lineNo)
-                    && Objects.equals(columnNo, suppression.columnNo)
+            return (lineNo == suppression.lineNo)
+                    && (columnNo == suppression.columnNo)
                     && Objects.equals(suppressionType, suppression.suppressionType)
                     && Objects.equals(text, suppression.text)
                     && Objects.equals(eventSourceRegexp, suppression.eventSourceRegexp)

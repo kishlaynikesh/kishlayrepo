@@ -194,14 +194,14 @@ public class RequireEmptyLineBeforeBlockTagGroupCheck extends AbstractJavadocChe
      * |--NEWLINE[3x0] : [\n]
      * |--LEADING_ASTERISK[4x0] : [ *]
      * |--WS[4x2] : [ ]
-     * |--JAVADOC_TAG[4x3] : [@param T The bar.\n ]
+     * |--JAVADOC_TAG[4x3] : [{@code T} The bar.\n ]
      * </pre>
      * Or it can also look like:
      * <pre>
      * JAVADOC[3x0]
      * |--NEWLINE[3x0] : [\n]
      * |--LEADING_ASTERISK[4x0] : [ *]
-     * |--JAVADOC_TAG[4x3] : [@param T The bar.\n ]
+     * |--JAVADOC_TAG[4x3] : [{@code T} The bar.\n ]
      * </pre>
      * We do not include the variation
      * <pre>
@@ -210,7 +210,7 @@ public class RequireEmptyLineBeforeBlockTagGroupCheck extends AbstractJavadocChe
      * which results in the tree
      * <pre>
      * JAVADOC[3x0]
-     * |--JAVADOC_TAG[4x3] : [@param noSpace there is no space here\n ]
+     * |--JAVADOC_TAG[4x3] : [{@code noSpace} there is no space here\n ]
      * </pre>
      * because this one is invalid. We must recommend placing a blank line to separate &#64;param
      * from the first javadoc asterisks.
