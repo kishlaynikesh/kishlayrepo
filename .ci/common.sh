@@ -66,15 +66,15 @@ function should_run_job {
          fi
 
          if [[ $DEBUG == "true" ]]; then
-              OUT=`git diff --name-only $HEAD $PREVIOUS_COMMIT`
+              OUT=`git diff --name-only $HEAD "$PREVIOUS_COMMIT"`
               echo "Files between top commit and previous: $OUT"
-              OUT=`git diff --name-only $HEAD $PREVIOUS_COMMIT | grep -vE "$SKIP_FILES" | cat`
+              OUT=$(git diff --name-only "$HEAD" "$PREVIOUS_COMMIT" | grep -vE "$SKIP_FILES" | cat)
               echo "Files should not skip: $OUT"
          fi
 
          # Identifies if the files involved in the commits between head and previous
          # is more than the list of skippable files
-         if [[ $(git diff --name-only $HEAD $PREVIOUS_COMMIT \
+         if [[ $(git diff --name-only "$HEAD" "$PREVIOUS_COMMIT" \
                     | grep -vE "$SKIP_FILES" | cat | wc -c | sed 's/^ *//' ) > 0 ]]; then
               SKIP_JOB_BY_FILES="false"
          else
@@ -89,7 +89,7 @@ function should_run_job {
     local SKIP_JOB_BY_COMMIT="false"
 
     if [[ $DEBUG == "true" ]]; then
-         OUT=`git log -1 --format=%B`
+         OUT=$(git log -1 --format=%B)
          echo "Top commit message: $OUT"
     fi
 
