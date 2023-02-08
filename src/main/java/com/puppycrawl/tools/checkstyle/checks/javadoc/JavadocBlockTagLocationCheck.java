@@ -87,8 +87,8 @@ import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
  *  * A @custom tag (OK)
  *  * <!-- @see commented out (OK) -->
  *  * email@author (OK)
- *  * (@param in parentheses) (OK)
- *  * '@param in single quotes' (OK)
+ *  * ({@code in} parentheses) (OK)
+ *  * '{@code in} single quotes' (OK)
  *  * &#64;since 1.0 (OK)
  *  * text &#64;return (violation)
  *  * * &#64;param (violation)

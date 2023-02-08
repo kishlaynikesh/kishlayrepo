@@ -203,7 +203,7 @@ public class EqualsHashCodeCheck
         final DetailAST methodName = ast.findFirstToken(TokenTypes.IDENT);
         final DetailAST parameters = ast.findFirstToken(TokenTypes.PARAMETERS);
 
-        return "hashCode".equals(methodName.getText())
+        return methodName.getText().equals("hashCode")
                 && parameters.getFirstChild() == null
                 && (ast.findFirstToken(TokenTypes.SLIST) != null
                         || modifiers.findFirstToken(TokenTypes.LITERAL_NATIVE) != null);
@@ -219,7 +219,7 @@ public class EqualsHashCodeCheck
         final DetailAST typeNode = paramNode.findFirstToken(TokenTypes.TYPE);
         final FullIdent fullIdent = FullIdent.createFullIdentBelow(typeNode);
         final String name = fullIdent.getText();
-        return "Object".equals(name) || "java.lang.Object".equals(name);
+        return name.equals("Object") || name.equals("java.lang.Object");
     }
 
     @Override

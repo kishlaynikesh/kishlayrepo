@@ -317,12 +317,12 @@ public class RedundantModifierCheck
 
             final int type = modifier.getType();
             if (type == TokenTypes.LITERAL_PUBLIC
-                || type == TokenTypes.LITERAL_STATIC
-                        && ast.getType() != TokenTypes.METHOD_DEF
-                || type == TokenTypes.ABSTRACT
-                        && ast.getType() != TokenTypes.CLASS_DEF
-                || type == TokenTypes.FINAL
-                        && ast.getType() != TokenTypes.CLASS_DEF) {
+                || (type == TokenTypes.LITERAL_STATIC
+                        && ast.getType() != TokenTypes.METHOD_DEF)
+                || (type == TokenTypes.ABSTRACT
+                        && ast.getType() != TokenTypes.CLASS_DEF)
+                || (type == TokenTypes.FINAL
+                        && ast.getType() != TokenTypes.CLASS_DEF)) {
                 log(modifier, MSG_KEY, modifier.getText());
             }
 
@@ -495,7 +495,7 @@ public class RedundantModifierCheck
         boolean result = false;
         final List<DetailAST> methodAnnotationsList = getMethodAnnotationsList(methodDef);
         for (DetailAST annotationNode : methodAnnotationsList) {
-            if ("SafeVarargs".equals(annotationNode.getLastChild().getText())) {
+            if (annotationNode.getLastChild().getText().equals("SafeVarargs")) {
                 result = true;
                 break;
             }

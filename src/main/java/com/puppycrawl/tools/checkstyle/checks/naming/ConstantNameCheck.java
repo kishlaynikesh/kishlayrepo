@@ -164,8 +164,8 @@ public class ConstantNameCheck
         final DetailAST modifiersAST =
             ast.findFirstToken(TokenTypes.MODIFIERS);
         final boolean isStaticFinal =
-            modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null
-                && modifiersAST.findFirstToken(TokenTypes.FINAL) != null
+            (modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null
+                && modifiersAST.findFirstToken(TokenTypes.FINAL) != null)
             || ScopeUtil.isInAnnotationBlock(ast)
             || ScopeUtil.isInInterfaceBlock(ast);
         if (isStaticFinal && shouldCheckInScope(modifiersAST)
@@ -173,8 +173,8 @@ public class ConstantNameCheck
             // Handle the serialVersionUID and serialPersistentFields constants
             // which are used for Serialization. Cannot enforce rules on it. :-)
             final DetailAST nameAST = ast.findFirstToken(TokenTypes.IDENT);
-            if (!"serialVersionUID".equals(nameAST.getText())
-                && !"serialPersistentFields".equals(nameAST.getText())) {
+            if (!nameAST.getText().equals("serialVersionUID")
+                && !nameAST.getText().equals("serialPersistentFields")) {
                 returnValue = true;
             }
         }

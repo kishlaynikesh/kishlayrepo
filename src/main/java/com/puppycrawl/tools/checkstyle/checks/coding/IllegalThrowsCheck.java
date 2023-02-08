@@ -225,9 +225,9 @@ public final class IllegalThrowsCheck extends AbstractCheck {
      */
     private boolean isIgnorableMethod(DetailAST methodDef) {
         return shouldIgnoreMethod(methodDef.findFirstToken(TokenTypes.IDENT).getText())
-            || ignoreOverriddenMethods
+            || (ignoreOverriddenMethods
                && (AnnotationUtil.containsAnnotation(methodDef, "Override")
-                  || AnnotationUtil.containsAnnotation(methodDef, "java.lang.Override"));
+                  || AnnotationUtil.containsAnnotation(methodDef, "java.lang.Override")));
     }
 
     /**

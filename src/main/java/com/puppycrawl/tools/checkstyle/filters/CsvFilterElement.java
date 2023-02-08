@@ -106,7 +106,7 @@ class CsvFilterElement implements IntFilterElement {
         if (this == object) {
             return true;
         }
-        if (object == null || getClass() != object.getClass()) {
+        if (!(object instanceof CsvFilterElement)) {
             return false;
         }
         final CsvFilterElement csvFilter = (CsvFilterElement) object;

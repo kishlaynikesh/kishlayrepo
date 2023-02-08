@@ -46,13 +46,13 @@ public final class ScopeUtil {
         Scope result = null;
         for (DetailAST token = aMods.getFirstChild(); token != null;
                 token = token.getNextSibling()) {
-            if ("public".equals(token.getText())) {
+            if (token.getText().equals("public")) {
                 result = Scope.PUBLIC;
             }
-            else if ("protected".equals(token.getText())) {
+            else if (token.getText().equals("protected")) {
                 result = Scope.PROTECTED;
             }
-            else if ("private".equals(token.getText())) {
+            else if (token.getText().equals("private")) {
                 result = Scope.PRIVATE;
             }
         }

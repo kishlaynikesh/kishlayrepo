@@ -372,11 +372,11 @@ public class RightCurlyCheck extends AbstractCheck {
     private static boolean shouldBeAloneOnLine(RightCurlyOption bracePolicy,
                                                Details details,
                                                String targetSrcLine) {
-        return bracePolicy == RightCurlyOption.ALONE
-                    && shouldBeAloneOnLineWithAloneOption(details, targetSrcLine)
-                || (bracePolicy == RightCurlyOption.ALONE_OR_SINGLELINE
+        return (bracePolicy == RightCurlyOption.ALONE
+                    && shouldBeAloneOnLineWithAloneOption(details, targetSrcLine))
+                || ((bracePolicy == RightCurlyOption.ALONE_OR_SINGLELINE
                     || details.shouldCheckLastRcurly)
-                    && shouldBeAloneOnLineWithNotAloneOption(details, targetSrcLine);
+                    && shouldBeAloneOnLineWithNotAloneOption(details, targetSrcLine));
     }
 
     /**

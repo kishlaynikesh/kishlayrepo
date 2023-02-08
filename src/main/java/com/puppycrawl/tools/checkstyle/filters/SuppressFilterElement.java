@@ -217,9 +217,9 @@ public class SuppressFilterElement
      * @return true if line and column are matching or not set.
      */
     private boolean isLineAndColumnMatching(AuditEvent event) {
-        return lineFilter == null && columnFilter == null
-                || lineFilter != null && lineFilter.accept(event.getLine())
-                || columnFilter != null && columnFilter.accept(event.getColumn());
+        return (lineFilter == null && columnFilter == null)
+                || (lineFilter != null && lineFilter.accept(event.getLine()))
+                || (columnFilter != null && columnFilter.accept(event.getColumn()));
     }
 
     @Override
@@ -233,7 +233,7 @@ public class SuppressFilterElement
         if (this == other) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(other instanceof SuppressFilterElement)) {
             return false;
         }
         final SuppressFilterElement suppressElement = (SuppressFilterElement) other;

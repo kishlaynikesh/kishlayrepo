@@ -249,7 +249,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      * @param ast SLIST ast.
      */
     private void processSlist(DetailAST ast) {
-        if (LEFT_CURLY.equals(ast.getText())) {
+        if (ast.getText().equals(LEFT_CURLY)) {
             final FieldFrame frame = new FieldFrame(currentFrame);
             currentFrame.addChild(frame);
             currentFrame = frame;
@@ -262,7 +262,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      * @param ast SLIST ast.
      */
     private void leaveSlist(DetailAST ast) {
-        if (LEFT_CURLY.equals(ast.getText())) {
+        if (ast.getText().equals(LEFT_CURLY)) {
             currentFrame = currentFrame.getParent();
         }
     }
@@ -293,8 +293,8 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
         final DetailAST dot = methodCall.getFirstChild();
         if (dot.getType() == TokenTypes.DOT) {
             final String methodName = dot.getLastChild().getText();
-            if (EQUALS.equals(methodName)
-                    || !ignoreEqualsIgnoreCase && "equalsIgnoreCase".equals(methodName)) {
+            if (methodName.equals(EQUALS)
+                    || (!ignoreEqualsIgnoreCase && methodName.equals("equalsIgnoreCase"))) {
                 currentFrame.addMethodCall(methodCall);
             }
         }
@@ -355,7 +355,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
                 && containsAllSafeTokens(expr)
                 && isCalledOnStringFieldOrVariable(objCalledOn)) {
             final String methodName = methodCall.getFirstChild().getLastChild().getText();
-            if (EQUALS.equals(methodName)) {
+            if (methodName.equals(EQUALS)) {
                 log(methodCall, MSG_EQUALS_AVOID_NULL);
             }
             else {
@@ -461,7 +461,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
             if (field != null
                     && (frame.isClassOrEnumOrRecordDef()
                             || CheckUtil.isBeforeInSource(field, objCalledOn))) {
-                result = STRING.equals(getFieldType(field));
+                result = getFieldType(field).equals(STRING);
                 break;
             }
             frame = frame.getParent();
@@ -478,7 +478,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
     private boolean isStringFieldOrVariableFromThisInstance(DetailAST objCalledOn) {
         final String name = objCalledOn.getText();
         final DetailAST field = getObjectFrame(currentFrame).findField(name);
-        return field != null && STRING.equals(getFieldType(field));
+        return field != null && getFieldType(field).equals(STRING);
     }
 
     /**
@@ -496,7 +496,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
         while (frame != null) {
             if (className.equals(frame.getFrameName())) {
                 final DetailAST field = frame.findField(name);
-                result = STRING.equals(getFieldType(field));
+                result = getFieldType(field).equals(STRING);
                 break;
             }
             frame = getObjectFrame(frame.getParent());

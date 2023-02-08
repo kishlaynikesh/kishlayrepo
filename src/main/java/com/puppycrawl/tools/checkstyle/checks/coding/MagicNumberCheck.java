@@ -496,7 +496,7 @@ public class MagicNumberCheck extends AbstractCheck {
             // Check for 'hashCode' name.
             final DetailAST identAST = methodDefAST.findFirstToken(TokenTypes.IDENT);
 
-            if ("hashCode".equals(identAST.getText())) {
+            if (identAST.getText().equals("hashCode")) {
                 // Check for no arguments.
                 final DetailAST paramAST = methodDefAST.findFirstToken(TokenTypes.PARAMETERS);
                 // we are in a 'public int hashCode()' method! The compiler will ensure

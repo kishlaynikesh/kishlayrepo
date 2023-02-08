@@ -167,12 +167,12 @@ public final class BlockCommentPosition {
      */
     public static boolean isOnField(DetailAST blockComment) {
         return isOnPlainClassMember(blockComment, TokenTypes.VARIABLE_DEF)
-                || isOnTokenWithModifiers(blockComment, TokenTypes.VARIABLE_DEF)
+                || (isOnTokenWithModifiers(blockComment, TokenTypes.VARIABLE_DEF)
                     && blockComment.getParent().getParent().getParent()
-                        .getType() == TokenTypes.OBJBLOCK
-                || isOnTokenWithAnnotation(blockComment, TokenTypes.VARIABLE_DEF)
+                        .getType() == TokenTypes.OBJBLOCK)
+                || (isOnTokenWithAnnotation(blockComment, TokenTypes.VARIABLE_DEF)
                     && blockComment.getParent().getParent().getParent()
-                        .getParent().getType() == TokenTypes.OBJBLOCK;
+                        .getParent().getType() == TokenTypes.OBJBLOCK);
     }
 
     /**

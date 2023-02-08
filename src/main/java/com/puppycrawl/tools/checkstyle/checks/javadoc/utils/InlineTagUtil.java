@@ -19,12 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks.javadoc.utils;
 
+import com.google.common.base.Splitter;
+import com.puppycrawl.tools.checkstyle.api.LineColumn;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.puppycrawl.tools.checkstyle.api.LineColumn;
 
 /**
  * Tools for extracting inline tags from Javadoc comments.
@@ -123,9 +123,9 @@ public final class InlineTagUtil {
      */
     private static LineColumn getLineColumnOfIndex(String source, int index) {
         final String precedingText = source.subSequence(0, index).toString();
-        final String[] precedingLines = NEWLINE_PATTERN.split(precedingText);
-        final String lastLine = precedingLines[precedingLines.length - 1];
-        return new LineColumn(precedingLines.length, lastLine.length());
+        final List<String> precedingLines = Splitter.on(NEWLINE_PATTERN).splitToList(precedingText);
+        final String lastLine = precedingLines.get(precedingLines.size() - 1);
+        return new LineColumn(precedingLines.size(), lastLine.length());
     }
 
     /**

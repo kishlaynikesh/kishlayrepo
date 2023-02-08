@@ -19,15 +19,15 @@
 
 package com.puppycrawl.tools.checkstyle;
 
+import com.google.errorprone.annotations.InlineMe;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 /**
  * Default implementation of the Configuration interface.
@@ -140,7 +140,8 @@ public final class DefaultConfiguration implements Configuration {
      * @deprecated This shall be removed in future releases. Please use
      *      {@code addProperty(String propertyName, String value)} instead.
      */
-    @Deprecated(since = "8.45")
+    @InlineMe(replacement = "this.addProperty(attributeName, value)")
+@Deprecated(since = "8.45")
     public void addAttribute(String attributeName, String value) {
         addProperty(attributeName, value);
     }

@@ -19,7 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
+import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
@@ -27,11 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
-import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
  * <p>
@@ -453,7 +453,7 @@ public final class ModifiedControlVariableCheck extends AbstractCheck {
      * @return all child of given ast
      */
     private static List<DetailAST> findChildrenOfExpressionType(DetailAST ast) {
-        final List<DetailAST> foundExpressions = new LinkedList<>();
+        final List<DetailAST> foundExpressions = new ArrayList<>();
         if (ast != null) {
             for (DetailAST iteratingExpressionAST = ast.findFirstToken(TokenTypes.EXPR);
                  iteratingExpressionAST != null;

@@ -19,6 +19,7 @@
 
 package com.puppycrawl.tools.checkstyle.checks.imports;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -30,7 +31,7 @@ import java.util.LinkedList;
 abstract class AbstractImportControl {
 
     /** List of {@link AbstractImportRule} objects to check. */
-    private final Deque<AbstractImportRule> rules = new LinkedList<>();
+    private final Deque<AbstractImportRule> rules = new ArrayDeque<>();
     /** The parent. Null indicates we are the root node. */
     private final AbstractImportControl parent;
     /** Strategy in a case if matching allow/disallow rule was not found. */

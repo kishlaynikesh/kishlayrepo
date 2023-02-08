@@ -19,6 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks;
 
+import com.puppycrawl.tools.checkstyle.StatelessCheck;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,12 +33,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
-import com.puppycrawl.tools.checkstyle.api.AuditEvent;
-import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
  * <p>
@@ -235,7 +235,7 @@ public class SuppressWarningsHolder
             final boolean afterStart = isSuppressedAfterEventStart(line, column, entry);
             final boolean beforeEnd = isSuppressedBeforeEventEnd(line, column, entry);
             final boolean nameMatches =
-                ALL_WARNING_MATCHING_ID.equals(entry.getCheckName())
+                entry.getCheckName().equals(ALL_WARNING_MATCHING_ID)
                     || entry.getCheckName().equalsIgnoreCase(checkAlias);
             final boolean idMatches = event.getModuleId() != null
                 && event.getModuleId().equals(entry.getCheckName());
@@ -259,8 +259,8 @@ public class SuppressWarningsHolder
      */
     private static boolean isSuppressedAfterEventStart(int line, int column, Entry entry) {
         return entry.getFirstLine() < line
-            || entry.getFirstLine() == line
-            && (column == 0 || entry.getFirstColumn() <= column);
+            || (entry.getFirstLine() == line
+            && (column == 0 || entry.getFirstColumn() <= column));
     }
 
     /**
@@ -275,8 +275,8 @@ public class SuppressWarningsHolder
      */
     private static boolean isSuppressedBeforeEventEnd(int line, int column, Entry entry) {
         return entry.getLastLine() > line
-            || entry.getLastLine() == line && entry
-                .getLastColumn() >= column;
+            || (entry.getLastLine() == line && entry
+                .getLastColumn() >= column);
     }
 
     @Override
@@ -307,7 +307,7 @@ public class SuppressWarningsHolder
         if (identifier.startsWith(JAVA_LANG_PREFIX)) {
             identifier = identifier.substring(JAVA_LANG_PREFIX.length());
         }
-        if ("SuppressWarnings".equals(identifier)) {
+        if (identifier.equals("SuppressWarnings")) {
             getAnnotationTarget(ast).ifPresent(targetAST -> {
                 addSuppressions(getAllAnnotationValues(ast), targetAST);
             });
@@ -532,7 +532,7 @@ public class SuppressWarningsHolder
      * @return list of expressions in strings
      */
     private static List<String> findAllExpressionsInChildren(DetailAST parent) {
-        final List<String> valueList = new LinkedList<>();
+        final List<String> valueList = new ArrayList<>();
         DetailAST childAST = parent.getFirstChild();
         while (childAST != null) {
             if (childAST.getType() == TokenTypes.EXPR) {

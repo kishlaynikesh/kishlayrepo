@@ -19,24 +19,7 @@
 
 package com.puppycrawl.tools.checkstyle.meta;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
+import com.google.common.base.Splitter;
 import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
@@ -44,6 +27,23 @@ import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 /**
  * Class for scraping module metadata from the corresponding class' class-level javadoc.
@@ -89,7 +89,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     /** Regular expression for detecting ANTLR tokens(for e.g. CLASS_DEF). */
     private static final Pattern TOKEN_TEXT_PATTERN = Pattern.compile("([A-Z_]{2,})+");
 
-    /** Regular expression for removal of @code{-} present at the beginning of texts. */
+    /** Regular expression for removal of {@code -} present at the beginning of texts. */
     private static final Pattern DESC_CLEAN = Pattern.compile("-\\s");
 
     /** Regular expression for file separator corresponding to the host OS. */
@@ -114,13 +114,12 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     /**
      * Format for exception message for missing type for check property.
      */
-    private static final String PROP_TYPE_MISSING = "Type for property '%s' is missing";
+    
 
     /**
      * Format for exception message for missing default value for check property.
      */
-    private static final String PROP_DEFAULT_VALUE_MISSING =
-        "Default value for property '%s' is missing";
+    
 
     /** ModuleDetails instance for each module AST traversal. */
     private ModuleDetails moduleDetails;
@@ -306,7 +305,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
             final DetailNode propertyType = getFirstChildOfMatchingText(nodeLi, TYPE_TAG)
                 .orElseThrow(() -> {
                     return new MetadataGenerationException(String.format(
-                        Locale.ROOT, PROP_TYPE_MISSING, propertyName)
+                        Locale.ROOT, "Type for property '%s' is missing", propertyName)
                     );
                 });
             final String propertyDesc = DESC_CLEAN.matcher(
@@ -330,7 +329,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
                 .map(defaultValueNode -> getPropertyDefaultText(nodeLi, defaultValueNode))
                 .orElseThrow(() -> {
                     return new MetadataGenerationException(String.format(
-                        Locale.ROOT, PROP_DEFAULT_VALUE_MISSING, propertyName)
+                        Locale.ROOT, "Default value for property '%s' is missing", propertyName)
                     );
                 });
             if (!PROPERTIES_TO_NOT_WRITE.contains(defaultValue)) {
@@ -543,7 +542,7 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     }
 
     /**
-     * Traverse parents until we reach the root node (@code{JavadocTokenTypes.JAVADOC})
+     * Traverse parents until we reach the root node {{@code JavadocTokenTypes.JAVADOC})
      * child and return its index.
      *
      * @param node subtree child node
@@ -598,8 +597,8 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
     @SuppressWarnings("deprecation")
     private String getModuleSimpleName() {
         final String fullFileName = getFileContents().getFileName();
-        final String[] pathTokens = FILE_SEPARATOR_PATTERN.split(fullFileName);
-        final String fileName = pathTokens[pathTokens.length - 1];
+        final List<String> pathTokens = Splitter.on(FILE_SEPARATOR_PATTERN).splitToList(fullFileName);
+        final String fileName = pathTokens.get(pathTokens.size() - 1);
         return fileName.substring(0, fileName.length() - JAVA_FILE_EXTENSION.length());
     }
 
@@ -611,12 +610,12 @@ public class JavadocMetadataScraper extends AbstractJavadocCheck {
      */
     private static String getPackageName(String filePath) {
         final Deque<String> result = new ArrayDeque<>();
-        final String[] filePathTokens = FILE_SEPARATOR_PATTERN.split(filePath);
-        for (int i = filePathTokens.length - 1; i >= 0; i--) {
-            if ("java".equals(filePathTokens[i]) || "resources".equals(filePathTokens[i])) {
+        final List<String> filePathTokens = Splitter.on(FILE_SEPARATOR_PATTERN).splitToList(filePath);
+        for (int i = filePathTokens.size() - 1; i >= 0; i--) {
+            if (filePathTokens[i].equals(filePathTokens.get(i)) || filePathTokens[i].equals(filePathTokens.get(i))) {
                 break;
             }
-            result.addFirst(filePathTokens[i]);
+            result.addFirst(filePathTokens.get(i));
         }
         final String fileName = result.removeLast();
         result.addLast(fileName.substring(0, fileName.length() - JAVA_FILE_EXTENSION.length()));

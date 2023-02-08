@@ -281,7 +281,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
             try {
                 fileName = file.getAbsolutePath();
                 final long timestamp = file.lastModified();
-                if (cacheFile != null && cacheFile.isInCache(fileName, timestamp)
+                if ((cacheFile != null && cacheFile.isInCache(fileName, timestamp))
                         || !acceptFileStarted(fileName)) {
                     continue;
                 }

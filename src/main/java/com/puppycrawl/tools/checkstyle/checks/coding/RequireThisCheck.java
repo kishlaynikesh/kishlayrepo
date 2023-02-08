@@ -380,7 +380,7 @@ public class RequireThisCheck extends AbstractCheck {
         frames = new HashMap<>();
         current.clear();
 
-        final Deque<AbstractFrame> frameStack = new LinkedList<>();
+        final Deque<AbstractFrame> frameStack = new ArrayDeque<>();
         DetailAST curNode = rootAST;
         while (curNode != null) {
             collectDeclarations(frameStack, curNode);
@@ -744,8 +744,8 @@ public class RequireThisCheck extends AbstractCheck {
      * @return true if token is part of expression, false otherwise
      */
     private static boolean isInExpression(DetailAST ast) {
-        return TokenTypes.DOT == ast.getParent().getType()
-                || TokenTypes.METHOD_REF == ast.getParent().getType();
+        return ast.getParent().getType() == TokenTypes.DOT
+                || ast.getParent().getType() == TokenTypes.METHOD_REF;
     }
 
     /**
@@ -1579,7 +1579,7 @@ public class RequireThisCheck extends AbstractCheck {
         protected AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod) {
             AbstractFrame frame = null;
 
-            if (lookForMethod && containsMethod(nameToFind)
+            if ((lookForMethod && containsMethod(nameToFind))
                 || containsFieldOrVariable(nameToFind)) {
                 frame = this;
             }

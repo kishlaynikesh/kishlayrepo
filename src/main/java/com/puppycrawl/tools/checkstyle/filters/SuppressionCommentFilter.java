@@ -466,8 +466,8 @@ public class SuppressionCommentFilter
      */
     // -@cs[AbbreviationAsWordInName] We can not change it as,
     // check's property is a part of API (used in configurations).
-    public void setCheckCPP(boolean checkCpp) {
-        checkCPP = checkCpp;
+    public void setCheckCPP(boolean checkCPP) {
+        this.checkCPP = checkCPP;
     }
 
     /**
@@ -514,8 +514,8 @@ public class SuppressionCommentFilter
         Tag result = null;
         for (Tag tag : tags) {
             if (tag.getLine() > event.getLine()
-                || tag.getLine() == event.getLine()
-                    && tag.getColumn() > event.getColumn()) {
+                || (tag.getLine() == event.getLine()
+                    && tag.getColumn() > event.getColumn())) {
                 break;
             }
             if (tag.isMatch(event)) {
@@ -745,8 +745,8 @@ public class SuppressionCommentFilter
                 return false;
             }
             final Tag tag = (Tag) other;
-            return Objects.equals(line, tag.line)
-                    && Objects.equals(column, tag.column)
+            return (line == tag.line)
+                    && (column == tag.column)
                     && Objects.equals(tagType, tag.tagType)
                     && Objects.equals(text, tag.text)
                     && Objects.equals(tagCheckRegexp, tag.tagCheckRegexp)

@@ -19,18 +19,18 @@
 
 package com.puppycrawl.tools.checkstyle.checks.imports;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.Splitter;
 import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -808,7 +808,7 @@ public class CustomImportOrderCheck extends AbstractCheck {
      */
     public final void setCustomImportOrderRules(final String inputCustomImportOrder) {
         if (!customImportOrderRules.equals(inputCustomImportOrder)) {
-            for (String currentState : GROUP_SEPARATOR_PATTERN.split(inputCustomImportOrder)) {
+            for (String currentState : Splitter.on(GROUP_SEPARATOR_PATTERN).split(inputCustomImportOrder)) {
                 addRulesToList(currentState);
             }
             customOrderRules.add(NON_GROUP_RULE_GROUP);
@@ -1016,10 +1016,10 @@ public class CustomImportOrderCheck extends AbstractCheck {
      */
     private void logWrongImportGroupOrder(DetailAST importAST, String importGroup,
             String currentGroupNumber, String fullImportIdent) {
-        if (NON_GROUP_RULE_GROUP.equals(importGroup)) {
+        if (importGroup.equals(NON_GROUP_RULE_GROUP)) {
             log(importAST, MSG_NONGROUP_IMPORT, fullImportIdent);
         }
-        else if (NON_GROUP_RULE_GROUP.equals(currentGroupNumber)) {
+        else if (currentGroupNumber.equals(NON_GROUP_RULE_GROUP)) {
             log(importAST, MSG_NONGROUP_EXPECTED, importGroup, fullImportIdent);
         }
         else {
@@ -1090,17 +1090,17 @@ public class CustomImportOrderCheck extends AbstractCheck {
             }
         }
         for (String group : customOrderRules) {
-            if (STANDARD_JAVA_PACKAGE_RULE_GROUP.equals(group)) {
+            if (group.equals(STANDARD_JAVA_PACKAGE_RULE_GROUP)) {
                 bestMatch = findBetterPatternMatch(importPath,
                         STANDARD_JAVA_PACKAGE_RULE_GROUP, standardPackageRegExp, bestMatch);
             }
-            if (SPECIAL_IMPORTS_RULE_GROUP.equals(group)) {
+            if (group.equals(SPECIAL_IMPORTS_RULE_GROUP)) {
                 bestMatch = findBetterPatternMatch(importPath,
                         group, specialImportsRegExp, bestMatch);
             }
         }
 
-        if (NON_GROUP_RULE_GROUP.equals(bestMatch.group)
+        if (bestMatch.group.equals(NON_GROUP_RULE_GROUP)
                 && customOrderRules.contains(THIRD_PARTY_PACKAGE_RULE_GROUP)
                 && thirdPartyPackageRegExp.matcher(importPath).find()) {
             bestMatch.group = THIRD_PARTY_PACKAGE_RULE_GROUP;
@@ -1130,8 +1130,8 @@ public class CustomImportOrderCheck extends AbstractCheck {
         while (matcher.find()) {
             final int length = matcher.end() - matcher.start();
             if (length > betterMatchCandidate.matchLength
-                    || length == betterMatchCandidate.matchLength
-                        && matcher.start() < betterMatchCandidate.matchPosition) {
+                    || (length == betterMatchCandidate.matchLength
+                        && matcher.start() < betterMatchCandidate.matchPosition)) {
                 betterMatchCandidate = new RuleMatchForImport(group, length, matcher.start());
             }
         }
@@ -1152,18 +1152,18 @@ public class CustomImportOrderCheck extends AbstractCheck {
     private static int compareImports(String import1, String import2) {
         int result = 0;
         final String separator = "\\.";
-        final String[] import1Tokens = import1.split(separator);
-        final String[] import2Tokens = import2.split(separator);
-        for (int i = 0; i != import1Tokens.length && i != import2Tokens.length; i++) {
-            final String import1Token = import1Tokens[i];
-            final String import2Token = import2Tokens[i];
+        final List<String> import1Tokens = Splitter.onPattern(separator).splitToList(import1);
+        final List<String> import2Tokens = Splitter.onPattern(separator).splitToList(import2);
+        for (int i = 0; i != import1Tokens.size() && i != import2Tokens.size(); i++) {
+            final String import1Token = import1Tokens.get(i);
+            final String import2Token = import2Tokens.get(i);
             result = import1Token.compareTo(import2Token);
             if (result != 0) {
                 break;
             }
         }
         if (result == 0) {
-            result = Integer.compare(import1Tokens.length, import2Tokens.length);
+            result = Integer.compare(import1Tokens.size(), import2Tokens.size());
         }
         return result;
     }
@@ -1215,10 +1215,10 @@ public class CustomImportOrderCheck extends AbstractCheck {
      * @throws IllegalStateException when ruleStr is unexpected value
      */
     private void addRulesToList(String ruleStr) {
-        if (STATIC_RULE_GROUP.equals(ruleStr)
-                || THIRD_PARTY_PACKAGE_RULE_GROUP.equals(ruleStr)
-                || STANDARD_JAVA_PACKAGE_RULE_GROUP.equals(ruleStr)
-                || SPECIAL_IMPORTS_RULE_GROUP.equals(ruleStr)) {
+        if (ruleStr.equals(STATIC_RULE_GROUP)
+                || ruleStr.equals(THIRD_PARTY_PACKAGE_RULE_GROUP)
+                || ruleStr.equals(STANDARD_JAVA_PACKAGE_RULE_GROUP)
+                || ruleStr.equals(SPECIAL_IMPORTS_RULE_GROUP)) {
             customOrderRules.add(ruleStr);
         }
         else if (ruleStr.startsWith(SAME_PACKAGE_RULE_GROUP)) {

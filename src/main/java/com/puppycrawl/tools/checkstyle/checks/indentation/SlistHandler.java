@@ -81,10 +81,10 @@ public class SlistHandler extends BlockParentHandler {
 
         final IndentLevel result;
         // if our parent is a block handler we want to be transparent
-        if (getParent() instanceof BlockParentHandler
-                && !(getParent() instanceof SlistHandler)
-            || child instanceof SlistHandler
-                && getParent() instanceof CaseHandler) {
+        if ((getParent() instanceof BlockParentHandler
+                && !(getParent() instanceof SlistHandler))
+            || (child instanceof SlistHandler
+                && getParent() instanceof CaseHandler)) {
             result = getParent().getSuggestedChildIndent(child);
         }
         else {

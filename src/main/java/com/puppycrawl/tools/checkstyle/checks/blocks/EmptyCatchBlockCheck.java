@@ -19,12 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks.blocks;
 
-import java.util.regex.Pattern;
-
+import com.google.common.base.Splitter;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -333,7 +333,7 @@ public class EmptyCatchBlockCheck extends AbstractCheck {
         }
         else if (firstElementInBlock.getType() == TokenTypes.BLOCK_COMMENT_BEGIN) {
             commentContent = firstElementInBlock.getFirstChild().getText();
-            final String[] lines = LINE_END_PATTERN.split(commentContent);
+            final Iterable<String> lines = Splitter.on(LINE_END_PATTERN).split(commentContent);
             for (String line : lines) {
                 if (!line.isEmpty()) {
                     commentContent = line;

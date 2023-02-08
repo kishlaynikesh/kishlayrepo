@@ -288,7 +288,7 @@ public abstract class AbstractExpressionHandler {
 
             IndentLevel theLevel = indentLevel;
             if (firstLineMatches
-                || firstLine > mainAst.getLineNo() && shouldIncreaseIndent()) {
+                || (firstLine > mainAst.getLineNo() && shouldIncreaseIndent())) {
                 theLevel = new IndentLevel(indentLevel, getBasicOffset());
             }
 
@@ -322,8 +322,8 @@ public abstract class AbstractExpressionHandler {
         // at the correct indention level; otherwise, it is an only an
         // violation if this statement starts the line and it is less than
         // the correct indentation level
-        if (mustMatch && !indentLevel.isAcceptable(start)
-                || !mustMatch && columnNumber == start && indentLevel.isGreaterThan(start)) {
+        if ((mustMatch && !indentLevel.isAcceptable(start))
+                || (!mustMatch && columnNumber == start && indentLevel.isGreaterThan(start))) {
             logChildError(ast, start, indentLevel);
         }
     }
@@ -430,8 +430,8 @@ public abstract class AbstractExpressionHandler {
         DetailAST realStart = ast;
         while (curNode != null) {
             if (curNode.getLineNo() < realStart.getLineNo()
-                    || curNode.getLineNo() == realStart.getLineNo()
-                    && curNode.getColumnNo() < realStart.getColumnNo()) {
+                    || (curNode.getLineNo() == realStart.getLineNo()
+                    && curNode.getColumnNo() < realStart.getColumnNo())) {
                 realStart = curNode;
             }
             DetailAST toVisit = curNode.getFirstChild();

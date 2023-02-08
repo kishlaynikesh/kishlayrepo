@@ -583,8 +583,8 @@ public class HiddenFieldCheck
             if (parent.getType() == TokenTypes.STATIC_INIT) {
                 inStatic = true;
             }
-            else if (parent.getType() == TokenTypes.METHOD_DEF
-                        && !ScopeUtil.isInScope(parent, Scope.ANONINNER)
+            else if ((parent.getType() == TokenTypes.METHOD_DEF
+                        && !ScopeUtil.isInScope(parent, Scope.ANONINNER))
                         || parent.getType() == TokenTypes.VARIABLE_DEF) {
                 final DetailAST mods =
                     parent.findFirstToken(TokenTypes.MODIFIERS);
@@ -647,7 +647,7 @@ public class HiddenFieldCheck
             final DetailAST typeAST = aMethodAST.findFirstToken(TokenTypes.TYPE);
             final String returnType = typeAST.getFirstChild().getText();
             if (typeAST.findFirstToken(TokenTypes.LITERAL_VOID) != null
-                    || setterCanReturnItsClass && frame.isEmbeddedIn(returnType)) {
+                    || (setterCanReturnItsClass && frame.isEmbeddedIn(returnType))) {
                 // this method has signature
                 //
                 //     void set${Name}(${anyType} ${name})
@@ -839,9 +839,9 @@ public class HiddenFieldCheck
          */
         public boolean containsInstanceField(String field) {
             return instanceFields.contains(field)
-                    || parent != null
+                    || (parent != null
                     && !staticType
-                    && parent.containsInstanceField(field);
+                    && parent.containsInstanceField(field));
         }
 
         /**
@@ -852,8 +852,8 @@ public class HiddenFieldCheck
          */
         public boolean containsStaticField(String field) {
             return staticFields.contains(field)
-                    || parent != null
-                    && parent.containsStaticField(field);
+                    || (parent != null
+                    && parent.containsStaticField(field));
         }
 
         /**

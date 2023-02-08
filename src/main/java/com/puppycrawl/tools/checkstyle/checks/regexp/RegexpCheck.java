@@ -639,8 +639,8 @@ public class RegexpCheck extends AbstractCheck {
 
             if (!ignore) {
                 matchCount++;
-                if (illegalPattern || checkForDuplicates
-                        && matchCount - 1 > duplicateLimit) {
+                if (illegalPattern || (checkForDuplicates
+                        && matchCount - 1 > duplicateLimit)) {
                     errorCount++;
                     logMessage(startLine);
                 }

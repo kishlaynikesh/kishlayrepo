@@ -90,10 +90,10 @@ public abstract class AbstractAccessControlNameCheck
 
         final boolean isPackage = !(isPublic || isProtected || isPrivate);
 
-        return applyToPublic && isPublic
-                || applyToProtected && isProtected
-                || applyToPackage && isPackage
-                || applyToPrivate && isPrivate;
+        return (applyToPublic && isPublic)
+                || (applyToProtected && isProtected)
+                || (applyToPackage && isPackage)
+                || (applyToPrivate && isPrivate);
     }
 
     /**
@@ -107,9 +107,9 @@ public abstract class AbstractAccessControlNameCheck
     private static boolean isPublic(DetailAST modifiers) {
         return modifiers.findFirstToken(TokenTypes.LITERAL_PUBLIC) != null
                 || ScopeUtil.isInAnnotationBlock(modifiers)
-                || ScopeUtil.isInInterfaceBlock(modifiers)
+                || (ScopeUtil.isInInterfaceBlock(modifiers)
                     // interface methods can be private
-                    && modifiers.findFirstToken(TokenTypes.LITERAL_PRIVATE) == null;
+                    && modifiers.findFirstToken(TokenTypes.LITERAL_PRIVATE) == null);
     }
 
     /**

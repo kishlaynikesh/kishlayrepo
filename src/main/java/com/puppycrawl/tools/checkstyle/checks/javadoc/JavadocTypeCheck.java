@@ -19,13 +19,8 @@
 
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -39,6 +34,12 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -412,8 +413,8 @@ public class JavadocTypeCheck
             && (surroundingScope == null || surroundingScope.isIn(scope))
             && (excludeScope == null
                 || !customScope.isIn(excludeScope)
-                || surroundingScope != null
-                && !surroundingScope.isIn(excludeScope))
+                || (surroundingScope != null
+                && !surroundingScope.isIn(excludeScope)))
             && !AnnotationUtil.containsAnnotation(ast, allowedAnnotations);
     }
 
@@ -530,7 +531,7 @@ public class JavadocTypeCheck
 
                 if (!found) {
                     final String actualParamName =
-                        TYPE_NAME_IN_JAVADOC_TAG_SPLITTER.split(tag.getFirstArg())[0];
+                        Iterables.get(Splitter.on(TYPE_NAME_IN_JAVADOC_TAG_SPLITTER).split(tag.getFirstArg()), 0);
                     log(tag.getLineNo(), tag.getColumnNo(),
                         MSG_UNUSED_TAG,
                         JavadocTagInfo.PARAM.getText(), actualParamName);
@@ -554,7 +555,7 @@ public class JavadocTypeCheck
             typeParamName = matchInAngleBrackets.group(1).trim();
         }
         else {
-            typeParamName = TYPE_NAME_IN_JAVADOC_TAG_SPLITTER.split(tag.getFirstArg())[0];
+            typeParamName = Iterables.get(Splitter.on(TYPE_NAME_IN_JAVADOC_TAG_SPLITTER).split(tag.getFirstArg()), 0);
         }
         return typeParamName;
     }

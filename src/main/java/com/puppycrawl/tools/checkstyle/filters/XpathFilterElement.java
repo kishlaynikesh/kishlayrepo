@@ -269,7 +269,7 @@ public class XpathFilterElement implements TreeWalkerFilter {
         if (this == other) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(other instanceof XpathFilterElement)) {
             return false;
         }
         final XpathFilterElement xpathFilter = (XpathFilterElement) other;

@@ -317,9 +317,9 @@ public class LineWrappingHandler {
                     && isEndOfScope(lastAnnotationNode, node);
             if (!isArrayInitPresentInAncestors
                     && (isCurrentNodeCloseAnnotationAloneInLine
-                    || node.getType() == TokenTypes.AT
+                    || (node.getType() == TokenTypes.AT
                     && (parentNode.getParent().getType() == TokenTypes.MODIFIERS
-                        || parentNode.getParent().getType() == TokenTypes.ANNOTATIONS)
+                        || parentNode.getParent().getType() == TokenTypes.ANNOTATIONS))
                     || TokenUtil.areOnSameLine(node, atNode))) {
                 logWarningMessage(node, firstNodeIndent);
             }

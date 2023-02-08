@@ -689,8 +689,8 @@ public class JavadocMethodCheck extends AbstractCheck {
 
         final List<JavadocTag> tags = new ArrayList<>();
         final String lFin = multilineCont.group(1);
-        if (!NEXT_TAG.equals(lFin)
-            && !END_JAVADOC.equals(lFin)) {
+        if (!lFin.equals(NEXT_TAG)
+            && !lFin.equals(END_JAVADOC)) {
             final String param1 = noargMultilineStart.group(1);
             final int col = noargMultilineStart.start(1) - 1;
 
@@ -810,8 +810,8 @@ public class JavadocMethodCheck extends AbstractCheck {
     private static boolean isInIgnoreBlock(DetailAST methodBodyAst, DetailAST throwAst) {
         DetailAST ancestor = throwAst.getParent();
         while (ancestor != methodBodyAst) {
-            if (ancestor.getType() == TokenTypes.LITERAL_TRY
-                    && ancestor.findFirstToken(TokenTypes.LITERAL_CATCH) != null
+            if ((ancestor.getType() == TokenTypes.LITERAL_TRY
+                    && ancestor.findFirstToken(TokenTypes.LITERAL_CATCH) != null)
                     || ancestor.getType() == TokenTypes.LAMBDA
                     || ancestor.getType() == TokenTypes.OBJBLOCK) {
                 // throw is inside a try block, and there is a catch block,

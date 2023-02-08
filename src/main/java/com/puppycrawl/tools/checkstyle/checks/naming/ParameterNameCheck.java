@@ -230,7 +230,7 @@ public class ParameterNameCheck extends AbstractNameCheck {
     protected boolean mustCheckName(DetailAST ast) {
         boolean checkName = true;
         final DetailAST parent = ast.getParent();
-        if (ignoreOverridden && isOverriddenMethod(ast)
+        if ((ignoreOverridden && isOverriddenMethod(ast))
                 || parent.getType() == TokenTypes.LITERAL_CATCH
                 || parent.getParent().getType() == TokenTypes.LAMBDA
                 || CheckUtil.isReceiverParameter(ast)
@@ -268,7 +268,7 @@ public class ParameterNameCheck extends AbstractNameCheck {
         if (annotation.isPresent()) {
             final Optional<DetailAST> overrideToken =
                 Optional.ofNullable(annotation.get().findFirstToken(TokenTypes.IDENT));
-            if (overrideToken.isPresent() && "Override".equals(overrideToken.get().getText())) {
+            if (overrideToken.isPresent() && overrideToken.get().getText().equals("Override")) {
                 overridden = true;
             }
         }

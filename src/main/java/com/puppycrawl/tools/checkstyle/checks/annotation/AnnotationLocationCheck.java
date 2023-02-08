@@ -426,7 +426,7 @@ public class AnnotationLocationCheck extends AbstractCheck {
             allowingCondition = allowSamelineSingleParameterlessAnnotation;
         }
         return allowSamelineMultipleAnnotations
-            || allowingCondition && !hasNodeBefore(annotation)
+            || (allowingCondition && !hasNodeBefore(annotation))
             || !hasNodeBeside(annotation);
     }
 

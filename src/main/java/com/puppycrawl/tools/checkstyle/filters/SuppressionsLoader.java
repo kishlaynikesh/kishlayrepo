@@ -137,12 +137,12 @@ public final class SuppressionsLoader
                              String qName,
                              Attributes attributes)
             throws SAXException {
-        if ("suppress".equals(qName)) {
+        if (qName.equals("suppress")) {
             // add SuppressFilterElement filter to the filter chain
             final SuppressFilterElement suppress = getSuppressElement(attributes);
             filterChain.addFilter(suppress);
         }
-        else if ("suppress-xpath".equals(qName)) {
+        else if (qName.equals("suppress-xpath")) {
             final XpathFilterElement filter = getXpathFilter(attributes);
             treeWalkerFilters.add(filter);
         }

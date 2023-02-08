@@ -64,8 +64,8 @@ public class TryHandler extends BlockParentHandler {
         final IndentLevel result;
         if (child instanceof CatchHandler
             || child instanceof FinallyHandler
-            || child instanceof NewHandler
-                && isTryBlocksResourceSpecification(child)) {
+            || (child instanceof NewHandler
+                && isTryBlocksResourceSpecification(child))) {
             result = getIndent();
         }
         else {

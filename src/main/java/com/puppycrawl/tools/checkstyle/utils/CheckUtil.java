@@ -95,7 +95,7 @@ public final class CheckUtil {
                 final DetailAST nameNode = ast.findFirstToken(TokenTypes.IDENT);
                 final String name = nameNode.getText();
 
-                if ("equals".equals(name)) {
+                if (name.equals("equals")) {
                     // one parameter?
                     final DetailAST paramsNode = ast.findFirstToken(TokenTypes.PARAMETERS);
                     equalsMethod = paramsNode.getChildCount() == 1;
@@ -254,8 +254,8 @@ public final class CheckUtil {
      */
     public static boolean isBeforeInSource(DetailAST ast1, DetailAST ast2) {
         return ast1.getLineNo() < ast2.getLineNo()
-            || TokenUtil.areOnSameLine(ast1, ast2)
-                && ast1.getColumnNo() < ast2.getColumnNo();
+            || (TokenUtil.areOnSameLine(ast1, ast2)
+                && ast1.getColumnNo() < ast2.getColumnNo());
     }
 
     /**

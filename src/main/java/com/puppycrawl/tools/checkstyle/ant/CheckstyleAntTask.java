@@ -676,7 +676,7 @@ public class CheckstyleAntTask extends Task {
         public AuditListener createListener(Task task) throws IOException {
             final AuditListener listener;
             if (type != null
-                    && E_XML.equals(type.getValue())) {
+                    && type.getValue().equals(E_XML)) {
                 listener = createXmlLogger(task);
             }
             else {

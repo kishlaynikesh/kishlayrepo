@@ -723,11 +723,11 @@ public class VisibilityModifierCheck
 
         final String variableScope = getVisibilityScope(variableDef);
 
-        if (!PRIVATE_ACCESS_MODIFIER.equals(variableScope)) {
+        if (!variableScope.equals(PRIVATE_ACCESS_MODIFIER)) {
             result =
                 isStaticFinalVariable(variableDef)
-                || packageAllowed && PACKAGE_ACCESS_MODIFIER.equals(variableScope)
-                || protectedAllowed && PROTECTED_ACCESS_MODIFIER.equals(variableScope)
+                || (packageAllowed && variableScope.equals(PACKAGE_ACCESS_MODIFIER))
+                || (protectedAllowed && variableScope.equals(PROTECTED_ACCESS_MODIFIER))
                 || isIgnoredPublicMember(variableName, variableScope)
                 || isAllowedPublicField(variableDef);
         }
@@ -755,7 +755,7 @@ public class VisibilityModifierCheck
      * @return true if variable belongs to public members that should be ignored.
      */
     private boolean isIgnoredPublicMember(String variableName, String variableScope) {
-        return PUBLIC_ACCESS_MODIFIER.equals(variableScope)
+        return variableScope.equals(PUBLIC_ACCESS_MODIFIER)
             && publicMemberPattern.matcher(variableName).find();
     }
 
@@ -766,8 +766,8 @@ public class VisibilityModifierCheck
      * @return true if allowed.
      */
     private boolean isAllowedPublicField(DetailAST variableDef) {
-        return allowPublicFinalFields && isFinalField(variableDef)
-            || allowPublicImmutableFields && isImmutableFieldDefinedInFinalClass(variableDef);
+        return (allowPublicFinalFields && isFinalField(variableDef))
+            || (allowPublicImmutableFields && isImmutableFieldDefinedInFinalClass(variableDef));
     }
 
     /**
@@ -837,7 +837,7 @@ public class VisibilityModifierCheck
             final boolean isCanonicalName = isCanonicalName(type);
             final String typeName = getTypeName(type, isCanonicalName);
             if (immutableClassShortNames.contains(typeName)
-                    || isCanonicalName && immutableClassCanonicalNames.contains(typeName)) {
+                    || (isCanonicalName && immutableClassCanonicalNames.contains(typeName))) {
                 final DetailAST typeArgs = getGenericTypeArgs(type, isCanonicalName);
 
                 if (typeArgs == null) {
